@@ -14,55 +14,58 @@ class DIWImportData extends ImportDataHelper
     /**
      * @param $data
      * @return array
-    {
-        "dataSource": "กรมโรงงานอุตสาหกรรม",
-        "code": "x-xx(x)-x/xx",
-        "factoryName": "xxx",
-        "ownerName": "xxx",
-        "perpose": "พิมพ์สิ่งพิมพ์ต่าง ๆ ",
-        "houseNo": "xx",
-        "streetName": "มหาราช",
-        "thambol": "พระบรมมหาราชวัง",
-        "amphur": "พระนคร",
-        "province": "กรุงเทพมหานคร",
-        "postCode": "10200",
-        "tel": "xxxxxxxxx",
-        "class": "4101",
-        "factoryType": "2",
-        "factoryId": "xxxxxxxxxxxxxx",
-        "factoryReg": "xxxxxxxxxxx",
-        "horsePower": "39.43",
-        "nuiHorsePower": "39.43",
-        "TAID": "100101",
-        "capitalLand": "0",
-        "capitalBuild": "550,000",
-        "capitalMachine": "2,400,000",
-        "capitalWorking": "400,000",
-        "manSkill": "2",
-        "manNoSkill": "1",
-        "womanSkill": "5",
-        "womanNoSkill": "4",
-        "expert": "1",
-        "tech": "0",
-        "pokDate": "1/4/37",
-        "startDate": "2/12/31",
-        "ownerAddress": "xx",
-        "ownerRoad": "มหาราช",
-        "ownerthambol": "พระบรมมหาราชวัง",
-        "ownerAmphur": "พระนคร",
-        "ownerProvince": "กรุงเทพมหานคร",
-        "ownerZipCode": "10200",
-        "ownerTel": "xxxxxxxxx",
-        "trade": "xxxxxxxxxxxxx",
-        "isicCode": "17092",
-        "factoringArea": "500",
-        "buildingArea": "180",
-        "fFlag": "1",
-        "capacityProduct": "1",
-        "capacityPerUnit": "เล่ม/ปี",
-        "latitude": "13.755734",
-        "longtitude": "100.489717"
-    }
+     *
+{"_id":{"$oid":"61ed1227f36563fed62fe6cb"},
+"dataSource":"กรมโรงงานอุตสาหกรรม",
+"code":"3-77(2)-28/51ชบ",
+"establishmentName":"บริษัท แม็ค-ไทย อินดัสเตรียล จำกัด",
+"ownerName":"บริษัท แม็ค-ไทย อินดัสเตรียล จำกัด",
+"purpose":"ผลิตชิ้นส่วนหรืออุปกรณ์สำหรับรถบรรทุกและรถแทรคเตอร์",
+"houseNo":"โครงการทองโกรว์ เมืองทองอุตสาหกรรม",
+"streetName":"บางนา-ตราด",
+"thambolName":"คลองตำหรุ",
+"amphurName":"เมืองชลบุรี",
+"provinceName":"ชลบุรี",
+"postCode":"20000",
+"tel":null,
+"class":"07702",
+"factoryType":"3",
+"factoryId":"10200002825515",
+"factoryReg":" 07702302851ชบ",
+"horsePower":"964.57",
+"nuiHorsePower":null,
+"TAID":"200112",
+"capitalLand":"36000000",
+"capitalBuild":"40000000",
+"capitalMachine":"30000000",
+"capitalWorking":"14000000",
+"manSkill":"20",
+"manNoSkill":"38",
+"womanSkill":"0",
+"womanNoSkill":"2",
+"expert":"0",
+"tech":"0",
+"pokDate":"2008-08-29 00:00:00",
+"startDate":"2009-02-26 00:00:00",
+"ownerHouseNo":"386",
+"ownerStreetName":null,
+"ownerThambolName":"บางเสาธง",
+"ownerAmphurName":"บางเสาธง",
+"ownerProvinceName":"สมุทรปราการ",
+"ownerPostCode":"10540",
+"ownerTel":null,
+"registrationNo":"0115551000779",
+"isicCode":"29309",
+"factoringArea":"17352",
+"buildingArea":"5280",
+"fFlag":"1",
+"capacityProduct":null,
+"capacityPerUnit":"ชุด/ปี",
+"latitude":null,
+"longitude":null,
+"status":"ยังดำเนินกิจการอยู่",
+"createdAt":"2022-01-23-15:30:31"}
+
      */
     public static function transform($data): array
     {
@@ -77,28 +80,28 @@ class DIWImportData extends ImportDataHelper
             'people' => []
         ];
 
-        $result['establishment']['registration_number'] = $data['trade'];
-        $result['establishment']['name'] = $data['factoryName'];
+        $result['establishment']['registration_number'] = $data['registrationNo'];
+        $result['establishment']['name'] = $data['establishmentName'];
 
-        $province = Province::where('name', $data['province'])->first();
+        $province = Province::where('name', $data['provinceName'])->first();
         if (!$province) {
             $province = new Province();
-            $province->name = $data['province'];
+            $province->name = $data['provinceName'];
             $province->save();
         }
 
-        $district = District::where('name', $data['amphur'])->first();
+        $district = District::where('name', $data['amphurName'])->first();
         if (!$district) {
             $district = new District();
-            $district->name = $data['amphur'];
+            $district->name = $data['amphurName'];
             $district->province_id = $province->id;
             $district->save();
         }
 
-        $subdistrict = Subdistrict::where('name', $data['thambol'])->first();
+        $subdistrict = Subdistrict::where('name', $data['thambolName'])->first();
         if (!$subdistrict) {
             $subdistrict = new Subdistrict();
-            $subdistrict->name = $data['thambol'];
+            $subdistrict->name = $data['thambolName'];
             $subdistrict->district_id = $district->id;
             $subdistrict->save();
         }
@@ -109,7 +112,7 @@ class DIWImportData extends ImportDataHelper
         $result['address']['postal_code'] = $data['postCode'];
         $result['address']['phone'] = $data['tel'];
         $result['address']['latitude'] = $data['latitude'];
-        $result['address']['longitude'] = $data['longtitude'];
+        $result['address']['longitude'] = $data['longitude'];
         $result['address']['type'] = 'factory';
 
         $result['tsicSeries']['tsic_code'] = $data['isicCode'];
@@ -124,10 +127,10 @@ class DIWImportData extends ImportDataHelper
         $result['workForceEmployee']['no_person_engaged'] = $result['workForceEmployee']['no_employee'];
 
 
-        if ($data['perpose']) {
+        if ($data['purpose']) {
             $result['data'][] = [
                 'key' => 'purpose',
-                'value' => $data['perpose'],
+                'value' => $data['purpose'],
                 'value_type' => 'string',
                 'table' => 'establishments'
             ];
@@ -270,57 +273,57 @@ class DIWImportData extends ImportDataHelper
 
         $data['people']['firstname'] = $data['ownerName'];
         $data['people']['type'] = 'owner';
-        $data['people']['identification_number'] = $data['trade'];
+        $data['people']['identification_number'] = $data['registrationNo'];
 
-        if ($data['ownerAddress']) {
+        if ($data['ownerHouseNo']) {
             $result['data'][] = [
-                'key' => 'ownerAddress',
-                'value' => $data['ownerAddress'],
+                'key' => 'ownerHouseNo',
+                'value' => $data['ownerHouseNo'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];
         }
 
-        if ($data['ownerRoad']) {
+        if ($data['ownerStreetName']) {
             $result['data'][] = [
-                'key' => 'ownerRoad',
-                'value' => $data['ownerRoad'],
+                'key' => 'ownerStreetName',
+                'value' => $data['ownerStreetName'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];
         }
 
-        if ($data['ownerthambol']) {
+        if ($data['ownerThambolName']) {
             $result['data'][] = [
-                'key' => 'ownerthambol',
-                'value' => $data['ownerthambol'],
+                'key' => 'ownerThambolName',
+                'value' => $data['ownerThambolName'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];
         }
 
-        if ($data['ownerAmphur']) {
+        if ($data['ownerAmphurName']) {
             $result['data'][] = [
-                'key' => 'ownerAmphur',
-                'value' => $data['ownerAmphur'],
+                'key' => 'ownerAmphurName',
+                'value' => $data['ownerAmphurName'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];
         }
 
-        if ($data['ownerProvince']) {
+        if ($data['ownerProvinceName']) {
             $result['data'][] = [
-                'key' => 'ownerProvince',
-                'value' => $data['ownerProvince'],
+                'key' => 'ownerProvinceName',
+                'value' => $data['ownerProvinceName'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];
         }
 
-        if ($data['ownerZipCode']) {
+        if ($data['ownerPostCode']) {
             $result['data'][] = [
-                'key' => 'ownerZipCode',
-                'value' => $data['ownerZipCode'],
+                'key' => 'ownerPostCode',
+                'value' => $data['ownerPostCode'],
                 'value_type' => 'string',
                 'table' => 'people'
             ];

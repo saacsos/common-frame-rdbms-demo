@@ -12,30 +12,31 @@ class DBDImportData extends ImportDataHelper
     /**
      * @param $data
      * @return array
-
-        "dataSource": "กรมพัฒนาธุรกิจการค้า",
-        "no": "5",
-        "registerNo": "xxxxxxxxxxx",
-        "registrationName": "xxxxx",
-        "establishmentName": "xxxxx",
-        "hqAddress": "xx ซอย xx ถนนxx",
-        "thambol": "คลองถนน",
-        "amphur": "สายไหม",
-        "province": "กรุงเทพมหานคร",
-        "tsicCode": "G",
-        "tsic2Digit": "47",
-        "tsic5Digit": "47411",
-        "status": "ยังดำเนินกิจการอยู่",
-        "sector1": "ภาคการค้าปลีกยกเว้นยานยนต์",
-        "sector2": "ภาคการค้า",
-        "oldDefinitionSize": "S",
-        "newDefinitionSize": "MICRO",
-        "oldDefinitionEmp": "8",
-        "newDefinitionEmp": "2",
-        "registeredCapital": "500,000.00",
-        "totalIncome": "383,599.70",
-        "profitOrLossAmount": "-13,363.14",
-        "totalAssets": "538,224.46"
+        {"_id":{"$oid":"61ed1227f36563fed62fe5ee"},
+        "dataSource":"กรมพัฒนาธุรกิจการค้า",
+     "no":"5",
+     "registrationNo":"0103535037556",
+     "registrationName":"หจ.เอส.เอ็ม.โอ.สตีล",
+     "establishmentName":"xxxxx",
+     "houseNo":"3769/229-230 ตรอกนอกเขต ถนนสุดประเสริฐ",
+     "thambolName":"บางโคล่",
+     "amphurName":"บางคอแหลม",
+     "provinceName":"กรุงเทพมหานคร",
+     "tsicCode":"G",
+     "tsicTwoDigit":"46",
+     "tsicFiveDigit":"46622",
+     "sector1":"ภาคการค้าส่งยกเว้นยานยนต์",
+     "sector2":"ภาคการค้า",
+     "oldDefinitionSize":"S",
+     "newDefinitionSize":"MICRO",
+     "oldDefinitionEmp":"9",
+     "newDefinitionEmp":"4",
+     "registeredCapital":"1,000,000",
+     "totalIncome":"3,561,661.00",
+     "profitOrLossAmount":"729,669.00",
+     "totalAssets":"7,210,380.00",
+     "status":"ยังดำเนินกิจการอยู่",
+     "createdAt":"2022-01-23-15:30:31"}
      */
     public static function transform($data): array
     {
@@ -50,7 +51,7 @@ class DBDImportData extends ImportDataHelper
             'people' => []
         ];
 
-        $result['establishment']['registration_number'] = $data['registerNo'];
+        $result['establishment']['registration_number'] = $data['registrationNo'];
         $result['data'][] = [
             'key' => 'registrationName',
             'value' => $data['registrationName'],
@@ -58,40 +59,35 @@ class DBDImportData extends ImportDataHelper
             'table' => 'establishments'
         ];
         $result['establishment']['name'] = $data['establishmentName'];
-        $result['data'][] = [
-            'key' => 'hqAddress',
-            'value' => $data['hqAddress'],
-            'value_type' => 'string',
-            'table' => 'addresses'
-        ];
 
-        $province = Province::where('name', $data['province'])->first();
+        $province = Province::where('name', $data['provinceName'])->first();
         if (!$province) {
             $province = new Province();
-            $province->name = $data['province'];
+            $province->name = $data['provinceName'];
             $province->save();
         }
 
-        $district = District::where('name', $data['amphur'])->first();
+        $district = District::where('name', $data['amphurName'])->first();
         if (!$district) {
             $district = new District();
-            $district->name = $data['amphur'];
+            $district->name = $data['amphurName'];
             $district->province_id = $province->id;
             $district->save();
         }
 
-        $subdistrict = Subdistrict::where('name', $data['thambol'])->first();
+        $subdistrict = Subdistrict::where('name', $data['thambolName'])->first();
         if (!$subdistrict) {
             $subdistrict = new Subdistrict();
-            $subdistrict->name = $data['thambol'];
+            $subdistrict->name = $data['thambolName'];
             $subdistrict->district_id = $district->id;
             $subdistrict->save();
         }
 
         $result['address']['subdistrict_id'] = $subdistrict->id;
+        $result['address']['house_no'] = $data['houseNo'];
 
-        $result['tsicSeries']['tsic_code'] = $data['tsic5Digit'];
-        $result['establishment']['tsic_code'] = $data['tsic5Digit'];
+        $result['tsicSeries']['tsic_code'] = $data['tsicFiveDigit'];
+        $result['establishment']['tsic_code'] = $data['tsicFiveDigit'];
         $result['tsicSeries']['type'] = $data['tsicCode'];
         $result['establishment']['status'] = $data['status'];
         $result['data'][] = [
