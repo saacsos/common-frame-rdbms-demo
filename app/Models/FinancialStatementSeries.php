@@ -13,6 +13,8 @@ class FinancialStatementSeries extends Model
 
     public $timestamps = false;
 
+    protected $dates = ['started_at', 'ended_at'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

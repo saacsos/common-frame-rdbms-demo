@@ -11,10 +11,6 @@ class WorkForceEmployee extends Model
 
     protected $guarded = ['id'];
 
-    public $timestamps = false;
-
-    protected $dates = ['created_at'];
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

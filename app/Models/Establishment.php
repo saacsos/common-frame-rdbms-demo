@@ -11,6 +11,8 @@ class Establishment extends Model
 
     protected $guarded = ['id'];
 
+    protected $appends = ['establishment_type_name'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -56,7 +58,7 @@ class Establishment extends Model
      */
     public function people(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(People::class);
+        return $this->belongsToMany(Person::class);
     }
 
     /**
@@ -97,5 +99,12 @@ class Establishment extends Model
      */
     public function workForceEmployees() {
         return $this->hasMany(WorkForceEmployee::class);
+    }
+
+    public function getEstablishmentTypeNameAttribute() {
+        if (!empty($this->establishment_type_id)) {
+            return $this->establishmentType->name;
+        }
+        return null;
     }
 }

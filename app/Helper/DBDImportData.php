@@ -46,7 +46,8 @@ class DBDImportData extends ImportDataHelper
             'establishmentSize' => [],
             'financialStatement' => [],
             'workForceEmployee' => [],
-            'data' => []
+            'data' => [],
+            'people' => []
         ];
 
         $result['establishment']['registration_number'] = $data['registerNo'];
@@ -128,9 +129,5 @@ class DBDImportData extends ImportDataHelper
         $result['financialStatement']['net_profit_loss'] = self::tofloat($data['profitOrLossAmount']);
         $result['financialStatement']['total_assets'] = self::tofloat($data['totalAssets']);
         return $result;
-    }
-
-    public static function tofloat($val) {
-        return floatval(str_replace(",","",$val));;
     }
 }

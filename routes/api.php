@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('establishments', [\App\Http\Controllers\Api\EstablishmentsController::class, 'index']);
+Route::get('establishments/{id}', [\App\Http\Controllers\Api\EstablishmentsController::class, 'show']);
 Route::post('establishments', [\App\Http\Controllers\Api\EstablishmentsController::class, 'store']);

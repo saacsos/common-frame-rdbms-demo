@@ -17,11 +17,15 @@ class DatasourceSeeder extends Seeder
         $datasource = Datasource::first();
         if (!$datasource) {
             $datasource = new Datasource();
-            $datasource->name = 'NSO สำนักงานสถิติแห่งชาติ';
+            $datasource->name = 'สำนักงานสถิติแห่งชาติ';
             $datasource->save();
 
             $datasource = new Datasource();
-            $datasource->name = 'DBD กรมพัฒนาธุรกิจการค้า';
+            $datasource->name = 'กรมพัฒนาธุรกิจการค้า';
+            $datasource->save();
+
+            $datasource = new Datasource();
+            $datasource->name = 'กรมโรงงานอุตสาหกรรม';
             $datasource->save();
         }
     }

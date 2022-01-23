@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use App\Models\District;
+use App\Models\EstablishmentType;
 use App\Models\Province;
 use App\Models\Region;
 use App\Models\Subdistrict;
@@ -105,10 +106,11 @@ class NSOImportData extends ImportDataHelper
             'establishmentSize' => [],
             'financialStatement' => [],
             'workForceEmployee' => [],
-            'data' => []
+            'data' => [],
+            'people' => []
         ];
 
-        $result['establishment']['registration_number'] = $data['regisCid'];
+        $result['establishment']['registration_number'] = $data['regisNo'];
         $result['establishment']['es_id'] = $data['esId'];
         $result['establishment']['title'] = $data['initial'];
         $result['establishment']['name'] = $data['esName'];
@@ -238,14 +240,22 @@ class NSOImportData extends ImportDataHelper
         $result['address']['soi'] = $data['soi'];
         $result['address']['house_no'] = $data['houseNo'];
         $result['address']['enumeration_area'] = $data['ea'];
-        $result['address']['type'] = $data['esType'];
         $result['address']['municipality_name'] = $data['munName'];
         $result['address']['phone'] = $data['telNo'];
         $result['address']['email'] = $data['email'];
 
+        if ($data['esType']) {
+            $esblishmentType = EstablishmentType::where('name', $data['esType'])->first();
+            if (!$esblishmentType) {
+                $esblishmentType = new EstablishmentType();
+                $esblishmentType->name = $data['esType'];
+                $esblishmentType->save();
+            }
+            $result['establishment']['establishment_type_id'] = $esblishmentType->id;
+        }
+
         $result['workForceEmployee']['no_person_engaged'] = $data['totWorker'];
         $result['workForceEmployee']['no_employee'] = $data['employee'];
-        $result['workForceEmployee']['created_at'] = now();
 
         return $result;
     }

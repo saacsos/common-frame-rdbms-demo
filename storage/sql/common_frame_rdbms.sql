@@ -228,7 +228,8 @@ CREATE TABLE `work_force_employees` (
   `no_person_engaged` int,
   `no_employee` int,
   `datasource_id` int,
-  `created_at` datetime
+  `created_at` datetime,
+  `updated_at` datetime
 );
 
 CREATE TABLE `work_force_employee_series` (
