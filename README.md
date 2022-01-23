@@ -14,3 +14,15 @@ php artisan serve
   * `GET` `/api/establishments`
 * เพิ่มหรือแก้ไขข้อมูลสถานประกอบการ
   * `POST` `/api/establishments`
+  * ระบุ request header เพิ่ม
+    * `Accept: application/json`
+  * format ของ request body
+  ```json
+  {
+     "data": [
+         {...ข้อมูลสถานประกอบการ},
+         {...ข้อมูลสถานประกอบการ},
+         {...}
+     ]  
+  }
+  ```
